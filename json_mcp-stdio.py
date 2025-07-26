@@ -7,7 +7,7 @@ MCP server: JSON 格式化 / 压缩
   - minify_json(raw:str, sort_keys:bool=True) -> str
 """
 import json
-import sys
+
 from mcp import types
 from mcp.server import Server, NotificationOptions
 from mcp.server.stdio import stdio_server

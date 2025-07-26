@@ -12,18 +12,21 @@
 ## 安装
 
 ### 环境要求
+
 - Python 3.8+
 - uv (Python 包管理器)
 
 ### 安装步骤
 
 1. 克隆仓库：
+
 ```bash
 git clone https://github.com/masx200/json-minifiy-formatter-mcp.git
 cd json-minifiy-formatter-mcp
 ```
 
 2. 使用 uv 安装依赖：
+
 ```bash
 uv sync
 ```
@@ -46,7 +49,7 @@ uv sync
       "command": "uv",
       "args": [
         "run",
-        "D:\\github\\json-minifiy-formatter-mcp\\json_mcp.py"
+        "D:\\github\\json-minifiy-formatter-mcp\\json_mcp-stdio.py"
       ]
     }
   }
@@ -62,10 +65,7 @@ uv sync
   "mcpServers": {
     "json-formatter": {
       "command": "uv",
-      "args": [
-        "run",
-        "/path/to/json-minifiy-formatter-mcp/json_mcp.py"
-      ]
+      "args": ["run", "/path/to/json-minifiy-formatter-mcp/json_mcp-stdio.py"]
     }
   }
 }
@@ -78,24 +78,24 @@ uv sync
 将 JSON 字符串格式化为带缩进的漂亮格式。
 
 **参数：**
+
 - `raw` (string, 必需): 原始 JSON 字符串
 - `indent` (integer, 可选, 默认值: 2): 缩进空格数
 - `sort_keys` (boolean, 可选, 默认值: true): 是否对键排序
 
 **示例：**
+
 ```json
-{"name":"张三","age":25,"skills":["Python","JavaScript"]}
+{ "name": "张三", "age": 25, "skills": ["Python", "JavaScript"] }
 ```
 
 **格式化后：**
+
 ```json
 {
   "age": 25,
   "name": "张三",
-  "skills": [
-    "Python",
-    "JavaScript"
-  ]
+  "skills": ["Python", "JavaScript"]
 }
 ```
 
@@ -104,24 +104,24 @@ uv sync
 将 JSON 字符串压缩为单行，移除所有空白字符。
 
 **参数：**
+
 - `raw` (string, 必需): 原始 JSON 字符串
 - `sort_keys` (boolean, 可选, 默认值: true): 是否对键排序
 
 **示例：**
+
 ```json
 {
   "name": "张三",
   "age": 25,
-  "skills": [
-    "Python",
-    "JavaScript"
-  ]
+  "skills": ["Python", "JavaScript"]
 }
 ```
 
 **压缩后：**
+
 ```json
-{"age":25,"name":"张三","skills":["Python","JavaScript"]}
+{ "age": 25, "name": "张三", "skills": ["Python", "JavaScript"] }
 ```
 
 ## 开发
@@ -129,14 +129,14 @@ uv sync
 ### 本地运行
 
 ```bash
-uv run python json_mcp.py
+uv run python json_mcp-stdio.py
 ```
 
 ### 项目结构
 
 ```
 json-minifiy-formatter-mcp/
-├── json_mcp.py          # 主程序文件
+├── json_mcp-stdio.py          # 主程序文件
 ├── pyproject.toml       # 项目配置
 ├── uv.lock             # 依赖锁定文件
 ├── README.md           # 项目说明
