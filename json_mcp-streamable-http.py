@@ -9,7 +9,7 @@ MCP server: JSON 格式化 / 压缩
 import json
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("json-tools",port=6600)
+mcp = FastMCP("json-tools",port=6600,host="0.0.0.0")
 
 
 @mcp.tool()
@@ -18,7 +18,8 @@ async def format_json(raw: str, indent: int = 2, sort_keys: bool = True) -> str:
     try:
         obj = json.loads(raw)
     except json.JSONDecodeError as e:
-        return f"❌ JSON 解析失败: {e}"
+        raise ValueError(f"JSON 解析失败: {e}")
+        # return f"❌ JSON 解析失败: {e}"
 
     pretty = json.dumps(obj, ensure_ascii=False, indent=indent, sort_keys=sort_keys)
     return pretty
@@ -30,7 +31,8 @@ async def minify_json(raw: str, sort_keys: bool = True) -> str:
     try:
         obj = json.loads(raw)
     except json.JSONDecodeError as e:
-        return f"❌ JSON 解析失败: {e}"
+        raise ValueError(f"JSON 解析失败: {e}")
+        # return f"❌ JSON 解析失败: {e}"
 
     mini = json.dumps(
         obj, ensure_ascii=False, separators=(",", ":"), sort_keys=sort_keys
