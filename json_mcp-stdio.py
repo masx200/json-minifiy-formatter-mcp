@@ -17,32 +17,38 @@ server = Server("json-tools")
 
 @server.call_tool()
 async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent]:
+    # types.CallToolResult:
     """处理 tool 调用"""
     if name == "format_json":
         try:
             obj = json.loads(arguments["raw"])
         except json.JSONDecodeError as e:
-            return [types.TextContent(type="text", text=f"❌ JSON 解析失败: {e}")]
+            raise ValueError(f"JSON 解析失败: {e}")
+            # return types.CallToolResult(content=[types.TextContent(type="text", text=f"❌ JSON 解析失败: {e}")], isError=True)
 
         indent = arguments.get("indent", 2)
         sort_keys = arguments.get("sort_keys", True)
         pretty = json.dumps(obj, ensure_ascii=False, indent=indent, sort_keys=sort_keys)
         return [types.TextContent(type="text", text=pretty)]
+        # return types.CallToolResult(content=[types.TextContent(type="text", text=pretty)])
 
     elif name == "minify_json":
         try:
             obj = json.loads(arguments["raw"])
         except json.JSONDecodeError as e:
-            return [types.TextContent(type="text", text=f"❌ JSON 解析失败: {e}")]
+            raise ValueError(f"JSON 解析失败: {e}")
+            # return types.CallToolResult(content=[types.TextContent(type="text", text=f"❌ JSON 解析失败: {e}")], isError=True)
 
         sort_keys = arguments.get("sort_keys", True)
         mini = json.dumps(
             obj, ensure_ascii=False, separators=(",", ":"), sort_keys=sort_keys
         )
         return [types.TextContent(type="text", text=mini)]
+        # return types.CallToolResult(content=[types.TextContent(type="text", text=mini)])
 
     else:
         return [types.TextContent(type="text", text=f"未知工具: {name}")]
+        # return types.CallToolResult(content=[types.TextContent(type="text", text=f"未知工具: {name}")], isError=True)
 
 
 @server.list_tools()
