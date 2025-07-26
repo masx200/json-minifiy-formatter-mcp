@@ -1,6 +1,7 @@
 # JSON 格式化/压缩 MCP 服务器
 
-一个基于 MCP (Model Context Protocol) 的 JSON 格式化与压缩工具服务器，支持将 JSON 字符串格式化为易读的格式或压缩为单行。
+一个基于 MCP (Model Context Protocol) 的 JSON 格式化与压缩工具服务器，支持将
+JSON 字符串格式化为易读的格式或压缩为单行。
 
 ## 功能特性
 
@@ -33,7 +34,16 @@ uv sync
 
 ## 配置
 
+### 协议选择
+
+本项目支持两种协议：
+
+- **stdio**: 标准输入输出协议
+- **streamable-http**: 流式 HTTP 协议
+
 ### Cursor 配置
+
+#### stdio 协议配置
 
 在 Cursor 的 MCP 配置文件中添加以下内容：
 
@@ -56,7 +66,26 @@ uv sync
 }
 ```
 
+#### streamable-http 协议配置
+
+```json
+{
+  "mcpServers": {
+    "json-minifiy-formatter-mcp-http": {
+      "transport": "streamable-http",
+      "name": "JSON 格式化 / 压缩 (HTTP)",
+      "type": "http",
+      "description": "JSON 格式化 / 压缩 (streamable-http)",
+      "isActive": true,
+      "url": "http://localhost:6600/mcp"
+    }
+  }
+}
+```
+
 ### Claude Desktop 配置
+
+#### stdio 协议配置
 
 在 Claude Desktop 的配置文件中添加：
 
@@ -66,6 +95,23 @@ uv sync
     "json-formatter": {
       "command": "uv",
       "args": ["run", "/path/to/json-minifiy-formatter-mcp/json_mcp-stdio.py"]
+    }
+  }
+}
+```
+
+#### streamable-http 协议配置
+
+```json
+{
+  "mcpServers": {
+    "json-minifiy-formatter-mcp-http": {
+      "transport": "streamable-http",
+      "name": "JSON 格式化 / 压缩 (HTTP)",
+      "type": "http",
+      "description": "JSON 格式化 / 压缩 (streamable-http)",
+      "isActive": true,
+      "url": "http://localhost:6600/mcp"
     }
   }
 }
@@ -128,15 +174,26 @@ uv sync
 
 ### 本地运行
 
+#### stdio 协议
+
 ```bash
 uv run python json_mcp-stdio.py
 ```
+
+#### streamable-http 协议
+
+```bash
+uv run python json_mcp-streamable-http.py
+```
+
+启动后，服务器将在 `http://localhost:6600` 上运行。
 
 ### 项目结构
 
 ```
 json-minifiy-formatter-mcp/
-├── json_mcp-stdio.py          # 主程序文件
+├── json_mcp-stdio.py          # stdio 协议主程序文件
+├── json_mcp-streamable-http.py # streamable-http 协议主程序文件
 ├── pyproject.toml       # 项目配置
 ├── uv.lock             # 依赖锁定文件
 ├── README.md           # 项目说明
@@ -149,7 +206,3 @@ json-minifiy-formatter-mcp/
 - **uv**: Python 包管理器
 - **mcp**: Model Context Protocol 库
 - **asyncio**: 异步编程支持
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
