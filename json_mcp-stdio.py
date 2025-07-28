@@ -8,6 +8,8 @@ MCP server: JSON 格式化 / 压缩
 """
 import json
 
+import asyncio
+
 from mcp import types
 from mcp.server import Server, NotificationOptions
 from mcp.server.stdio import stdio_server
@@ -94,8 +96,6 @@ async def handle_list_tools() -> list[types.Tool]:
         ),
     ]
 
-
-import asyncio
 
 
 async def main():
