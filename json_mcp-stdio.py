@@ -9,6 +9,7 @@ MCP server: JSON 格式化 / 压缩
 import json
 
 import asyncio
+from typing import Any
 
 from mcp import types
 from mcp.server import Server, NotificationOptions
@@ -18,7 +19,7 @@ server = Server("json-tools")
 
 
 @server.call_tool()
-async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent]:
+async def handle_call_tool(name: str, arguments: dict[str, Any]) -> list[types.TextContent]:
     # types.CallToolResult:
     """处理 tool 调用"""
     if name == "format_json":
