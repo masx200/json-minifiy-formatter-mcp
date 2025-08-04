@@ -7,9 +7,10 @@ MCP server: JSON 格式化 / 压缩
   - minify_json(raw:str, sort_keys:bool=True) -> str
 """
 import json
-import uvicorn
-import anyio
 import os
+
+import anyio
+import uvicorn
 from mcp.server.fastmcp import FastMCP
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
@@ -33,6 +34,9 @@ async def format_json(raw: str, indent: int = 2, sort_keys: bool = True) -> str:
     return pretty
 
 
+from starlette.types import ASGIApp
+
+
 @mcp.tool()
 async def minify_json(raw: str, sort_keys: bool = True) -> str:
     """把 JSON 字符串压缩成单行，去掉所有空白字符"""
@@ -48,7 +52,7 @@ async def minify_json(raw: str, sort_keys: bool = True) -> str:
     return mini
 
 class FixedBearerTokenMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, token: str):
+    def __init__(self, app: ASGIApp, token: str):
         super().__init__(app)
         self.token = token
 

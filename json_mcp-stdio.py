@@ -6,9 +6,8 @@ MCP server: JSON 格式化 / 压缩
   - format_json(raw:str, indent:int=2, sort_keys:bool=True) -> str
   - minify_json(raw:str, sort_keys:bool=True) -> str
 """
-import json
-
 import asyncio
+import json
 from typing import Any
 
 from mcp import types
@@ -96,7 +95,6 @@ async def handle_list_tools() -> list[types.Tool]:
             },
         ),
     ]
-
 
 
 async def main():
