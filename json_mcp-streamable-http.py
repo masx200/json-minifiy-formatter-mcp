@@ -7,9 +7,17 @@ MCP server: JSON 格式化 / 压缩
   - minify_json(raw:str, sort_keys:bool=True) -> str
 """
 import json
+import uvicorn
+import anyio
+import os
 from mcp.server.fastmcp import FastMCP
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import JSONResponse
 
-mcp = FastMCP("json-tools",port=6600,host="0.0.0.0")
+# 获取环境变量中的HTTP API Token
+HTTP_API_TOKEN = os.getenv("HTTP_API_TOKEN")
+
+mcp = FastMCP("json-tools", port=6600, host="0.0.0.0")
 
 
 @mcp.tool()
@@ -39,6 +47,41 @@ async def minify_json(raw: str, sort_keys: bool = True) -> str:
     )
     return mini
 
+class FixedBearerTokenMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, token: str):
+        super().__init__(app)
+        self.token = token
+
+    async def dispatch(self, request, call_next):
+        auth_header = request.headers.get("authorization")
+        expected = f"Bearer {self.token}"
+        if auth_header != expected:
+            return JSONResponse({"detail": "Unauthorized"}, status_code=401)
+        return await call_next(request)
+async def run_streamable_http_async(mcp:FastMCP, HTTP_API_TOKEN:str):
+
+    starlette_app = mcp.streamable_http_app()
+     # ✅ 添加固定 Token 验证中间件
+    starlette_app.add_middleware(
+        FixedBearerTokenMiddleware,
+        token=HTTP_API_TOKEN
+    )
+
+    config = uvicorn.Config(
+        starlette_app,
+        host=mcp.settings.host,
+        port=mcp.settings.port,
+        log_level=mcp.settings.log_level.lower(),
+    )
+    server = uvicorn.Server(config)
+    await server.serve()
+
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    if HTTP_API_TOKEN:
+        print(f"使用环境变量 HTTP API Token: {HTTP_API_TOKEN}")
+        anyio.run(run_streamable_http_async, mcp, HTTP_API_TOKEN)
+
+    else:
+        print("未设置环境变量 HTTP API Token")
+        mcp.run(transport="streamable-http")
