@@ -34,6 +34,10 @@ uv sync
 
 ## 配置
 
+### 环境变量
+
+- **HTTP_API_TOKEN** (可选): 为 streamable-http 协议设置 HTTP Bearer 身份验证令牌。如果设置，所有 HTTP 请求必须包含 `Authorization: Bearer <token>` 头部。
+
 ### 协议选择
 
 本项目支持两种协议：
@@ -68,6 +72,8 @@ uv sync
 
 #### streamable-http 协议配置
 
+**基本配置（无身份验证）：**
+
 ```json
 {
   "mcpServers": {
@@ -78,6 +84,33 @@ uv sync
       "description": "JSON 格式化 / 压缩 (streamable-http)",
       "isActive": true,
       "url": "http://localhost:6600/mcp"
+    }
+  }
+}
+```
+
+**带身份验证的配置（使用HTTP_API_TOKEN）：**
+
+首先设置环境变量：
+```bash
+export HTTP_API_TOKEN="your-secret-token-here"
+```
+
+然后在配置中添加headers：
+
+```json
+{
+  "mcpServers": {
+    "json-minifiy-formatter-mcp-http": {
+      "transport": "streamable-http",
+      "name": "JSON 格式化 / 压缩 (HTTP)",
+      "type": "http",
+      "description": "JSON 格式化 / 压缩 (streamable-http)",
+      "isActive": true,
+      "url": "http://localhost:6600/mcp",
+      "headers": {
+        "Authorization": "Bearer your-secret-token-here"
+      }
     }
   }
 }
@@ -102,6 +135,8 @@ uv sync
 
 #### streamable-http 协议配置
 
+**基本配置（无身份验证）：**
+
 ```json
 {
   "mcpServers": {
@@ -112,6 +147,33 @@ uv sync
       "description": "JSON 格式化 / 压缩 (streamable-http)",
       "isActive": true,
       "url": "http://localhost:6600/mcp"
+    }
+  }
+}
+```
+
+**带身份验证的配置（使用HTTP_API_TOKEN）：**
+
+首先设置环境变量：
+```bash
+export HTTP_API_TOKEN="your-secret-token-here"
+```
+
+然后在配置中添加headers：
+
+```json
+{
+  "mcpServers": {
+    "json-minifiy-formatter-mcp-http": {
+      "transport": "streamable-http",
+      "name": "JSON 格式化 / 压缩 (HTTP)",
+      "type": "http",
+      "description": "JSON 格式化 / 压缩 (streamable-http)",
+      "isActive": true,
+      "url": "http://localhost:6600/mcp",
+      "headers": {
+        "Authorization": "Bearer your-secret-token-here"
+      }
     }
   }
 }
@@ -182,7 +244,23 @@ uv run python json_mcp-stdio.py
 
 #### streamable-http 协议
 
+**无身份验证模式：**
 ```bash
+uv run python json_mcp-streamable-http.py
+```
+
+**带身份验证模式（设置HTTP_API_TOKEN）：**
+```bash
+# Linux/macOS
+export HTTP_API_TOKEN="your-secret-token-here"
+uv run python json_mcp-streamable-http.py
+
+# Windows PowerShell
+$env:HTTP_API_TOKEN="your-secret-token-here"
+uv run python json_mcp-streamable-http.py
+
+# Windows CMD
+set HTTP_API_TOKEN=your-secret-token-here
 uv run python json_mcp-streamable-http.py
 ```
 

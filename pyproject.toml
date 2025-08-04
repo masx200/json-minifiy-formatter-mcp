@@ -1,10 +1,13 @@
 [project]
 name = "json-minifiy-formatter-mcp"
-version = "0.1.0"
+version = "1.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "anyio>=4.9.0",
     "asyncio>=3.4.3",
     "mcp>=1.12.1",
+    "starlette>=0.47.2",
+    "uvicorn>=0.35.0",
 ]
