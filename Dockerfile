@@ -11,6 +11,9 @@ RUN pip install uv
 COPY pyproject.toml uv.lock ./
 COPY json_mcp-streamable-http.py ./
 
+
+copy ./* /app
+
 # 安装依赖
 RUN uv sync --frozen
 
